@@ -1,164 +1,180 @@
 public class Main
 {
-	public static void main(String[] args) 
+	public static void main(String[] args)
 	{
-	    
-	    System.out.println("exc1: ");
-	    char [] a = {'b','c','c','c','a','b','a','b','b','a'};
-		Queue<Character> q = new Queue<Character>(); 
-		q = arr2Q(a);
-		System.out.println(lenRow(q).toString());
 		
-		System.out.println("exc5: ");
-		int [] b = {1, 1, 3, 6, 8, 9, 10};
-		Queue<Integer> q1 = new Queue<Integer>(); 
-		q1 = arr2Q(b);
-		int [] c = {1, 2, 5, 7, 9};
-		Queue<Integer> q2 = new Queue<Integer>(); 
-		q2 = arr2Q(c);
-		System.out.println(combineSort(q1, q2));
-		
-		System.out.println("exc6: ");
-		int [] d = {1, 2, 2, 3, 6, 8, 4, 9, 10};
-		Queue<Integer> q3 = new Queue<Integer>(); 
-		q3 = arr2Q(d);
-		System.out.println(sumLongestEven(q3));
 	}
-	
-    public static Queue<Integer> lenRow(Queue<Character> q) //f1 - lengh of every "same char in a row"
+    public static <T> void printQ(Queue<T> q1)
     {
-        Queue<Character> copy = copyQueue(q);
-        Queue<Integer> ints = new Queue<Integer>();
-        int count = 1;
-        char prev = copy.remove();
-        while (!copy.isEmpty())
+       Queue <T> q2=QueueCopy(q1);      
+       while (!q2.isEmpty())
+        System.out.println(q2.remove());  
+       return;
+    }
+	public static <T> Queue<T> QueueCopy(Queue<T> q1)
+    {
+        Queue<T> q2=new Queue<T>();
+        Queue<T> q3=new Queue<T>();
+        while (!q1.isEmpty())
         {
-            if (copy.head() == prev)
-            {
-                count ++;
-            }
+            T a= q1.remove();
+            q2.insert(a);
+            q3.insert(a);
+        }    
+        while (!q3.isEmpty())
+            q1.insert(q3.remove());
+        return q2;      
+    }
+    public static Queue<Integer> level2_ex1(Queue<Character> q1)
+    {
+        Queue<Character> q2=QueueCopy(q1);
+        Queue<Integer> q3 = new Queue<>();
+        char a= q2.remove();
+        int x=1;
+        while (!q2.isEmpty())
+        {
+            char b=q2.remove();
+            if (a==b)
+               x++;
             else
             {
-                ints.insert(count);
-                count = 1;
+                q3.insert(x);
+                x=1;
             }
-            prev = copy.remove();
-        }
-        if (count == 1)
-            ints.insert(1);
-        return ints;
-    }	
-	public static <T> Queue<Integer> combineSort(Queue<Integer> q1, Queue<Integer> q2) //f5 - combine pre sorted Queue into one sorted Queue
-	{
-	    Queue<Integer> c1 = copyQueue(q1);
-	    Queue<Integer> c2 = copyQueue(q2);
-	    Queue<Integer> n = new  Queue<Integer>();
-	    int last;
-	    if(c1.head() < c2.head())
-	        last = c1.remove();
-	    else    
-	        last = c2.remove();
-
-	    
-	    while(!c1.isEmpty() && !c2.isEmpty())
-	    {
-	        if(c1.head() < c2.head())
-	        {
-	            if (last < c1.head())
-	            {
-	                n.insert(last);
-	                last = c1.remove();
-	            }
-	            else
-	                n.insert(c1.remove());
-	        }
-	        else    
-	        {
-	            if (last < c2.head())
-	            {
-	                n.insert(last);
-	                last = c2.remove();
-	            }
-	            else
-	                n.insert(c2.remove());
-	        }
-
-	    }
-	    n.insert(last);
-	    if(!c1.isEmpty())
-	    {
-	        while(!c1.isEmpty())
-	            n.insert(c1.remove());
-	    }
-	    else
-	    {
-	        while(!c2.isEmpty())
-	            n.insert(c2.remove());
-	    }
-	    
-	    return n;
-	}
-	public static int sumLongestEven(Queue<Integer> q)//f6 - sum of the longest string of of even numbers in a queue
-	{
-	    Queue<Integer> copy = copyQueue(q);;
-	    int sum = 0;
-	    int max_sum = 0;//sum of max length
-	    int len = 0;
-	    int max_len = 0;
-	    
-	    while(!copy.isEmpty())
-	    {
-	        int val = copy.remove();
-	        if(val%2==0)
-	        {
-	            sum += val;
-	            len ++;
-	        }
-	        else
-	        {
-	            if(len>max_len)
-	            {
-	                max_len = len;
-	                max_sum = sum;
-	            }
-	            len = 0;
-	            sum = 0;
-	        }
-	    }
-	    return max_sum;
-	}
-	
-	
-	public static <T> Queue<Integer> arr2Q(int [] a)
-	{
-	    Queue<Integer> q = new Queue<Integer>();
-	    for (int i=0; i<a.length; i++)
-	    {
-	        q.insert(a[i]);
-	    }
-	    return q;
-	} 
-	public static <T> Queue<Character> arr2Q(char [] a)
-	{
-	    Queue<Character> q = new Queue<Character>();
-	    for (int i=0; i<a.length; i++)
-	    {
-	        q.insert(a[i]);
-	    }
-	    return q;
-	} 
-	public static <T> Queue<T> copyQueue(Queue<T> q) 
+            a=b;        
+        }  
+        q3.insert(x);
+        return q3;  
+    }
+    public static boolean level2_ex2(Queue<String> q1)
     {
-        Queue<T> copy = new Queue<>();
-        Queue<T> temp = new Queue<>();
-        while (!q.isEmpty()) {
-            T val = q.remove(); 
-            copy.insert(val);             
-            temp.insert(val);
+        Queue<String> q2=QueueCopy(q1);
+        Queue<String> q3=QueueCopy(q1);
+        int a=0;
+        while(!q3.isEmpty())
+        {
+            a++;
+            q3.remove();
         }
-        while (!temp.isEmpty()) {
-            q.insert(temp.remove());
+        for (int i=0; i<a; i++)
+        {
+            String b=q2.remove();
+            q3=QueueCopy(q1);
+            for (int j=0; j<a; j++)
+            {
+                String c=q3.remove();
+                if (i!=j)
+                {
+                    if (b.equals(c))
+                        return true;
+                }
+            }
         }
-        return copy;
+        return false;
+    }
+    public static Queue<Integer> delNum(Queue<Integer> q1, int a)
+    {
+        Queue<Integer> q2 = QueueCopy(q1);
+        Queue<Integer> q3 = new Queue<>();
+        while (!q2.isEmpty())
+        {   
+            int b = q2.remove();
+            if (b!=a)
+               q3.insert(b);
+        }
+        return q3;
+    }
+    public static <T> boolean inQueue(Queue<T> q1, T a)
+    {
+        Queue<T> q2 = QueueCopy(q1);
+        while (!q2.isEmpty())
+        {
+            if (q2.remove().equals(a))
+                return true;
+        } 
+        return false;   
+    }
+    public static Queue<Integer> level2_ex3(Queue<Integer> q1)
+    {
+        Queue<Integer> q2 = QueueCopy(q1);
+        Queue<Integer> q3 = new Queue<>();
+        while (!q2.isEmpty())
+        {
+            int b=q2.remove();
+            if (!inQueue(q3, b))
+                q3.insert(b);
+            else
+                q2=delNum(q2, b);
+        }  
+        return q3; 
+    }
+    public static Queue<Integer> level2_ex4(Queue<Integer> q1)
+    {
+        Queue<Integer> q2 = new Queue<>(); 
+        Queue<Integer> q3 = new Queue<>(); 
+
+        while (!q1.isEmpty())
+        {
+            int min = q1.remove();
+            q2.insert(min);
+            while (!q1.isEmpty())
+            {
+                int v = q1.remove();
+                if (v < min) min = v;
+                q2.insert(v);
+            }
+
+            while (!q2.isEmpty())
+            {
+                int v = q2.remove();
+                if (v == min)
+                    q3.insert(v);
+                else
+                    q1.insert(v);
+            }
+        }
+        return q3;
+    }
+    public static Queue<Integer> Level2_ex5(Queue<Integer> q1, Queue<Integer> q2)
+    {
+        Queue<Integer> q3 = QueueCopy(q1);
+        Queue<Integer> q4 = QueueCopy(q2);
+        Queue<Integer> q5 = new Queue<>();
+
+        while (!q3.isEmpty() && !q4.isEmpty())
+        {
+            int a = q3.head();
+            int b = q4.head();
+            if (a <= b)
+                q5.insert(q3.remove());
+            else
+                q5.insert(q4.remove());
+        }
+        while (!q3.isEmpty()) 
+            q5.insert(q3.remove());
+        while (!q4.isEmpty()) 
+            q5.insert(q4.remove());
+
+        return q5;
+    }
+    public static int Level2_ex6(Queue<Integer> q1)
+    {
+        int a=0;
+        int b=0;
+        Queue<Integer> q2 = QueueCopy(q1);
+        while (!q2.isEmpty())
+        {
+            if (q2.remove()%2==0)
+                a++;
+            else 
+            {
+                if (a>b)
+                    b=a;
+                a=0;
+            } 
+        }
+        if (b==0)    
+            return a;
+        return b;
     }
 }
